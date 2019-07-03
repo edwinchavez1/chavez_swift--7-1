@@ -30,15 +30,22 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Do any additional setup after loading the view, typically from a nib.
     }
     override func viewDidAppear(_ animated: Bool) {
-        let itemObject = UserDefaults.standard.object(forKey: "tasklist")
+        let itemObject = UserDefaults.standard.object(forKey: "taskList")
         
         if let tempTask = itemObject as?
             [String] {
             taskList = tempTask
         }
         
-        //table.reloadData()
+        table.reloadData()
     }
-
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            taskList.remove(at: indexPath.row)
+            table.reloadData()
+            UserDefaults.standard.set(taskList, forKey: "taskList")
+        }
+    }
 }
 
